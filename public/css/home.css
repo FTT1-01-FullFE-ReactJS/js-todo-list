@@ -18,7 +18,6 @@ button {
 }
 .content-controls {
     display: flex;
-    
 }
 .content-controls .controls-left,
 .content-controls .controls-right {
@@ -96,7 +95,7 @@ button {
     width: 100%;
     border-collapse: collapse;
 }
-table, td, th {  
+table, td, th {
     border: 1px solid #ddd;
     text-align: center;
 }
@@ -124,5 +123,5 @@ table, td, th {
 }
 .content-tasks button:last-child {
     background-color: orange;
-    color: #ffff;  
+    color: #ffff;
 }
