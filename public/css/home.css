@@ -125,3 +125,7 @@ table, td, th {
     background-color: orange;
     color: #ffff;
 }
+
+.hidden {
+    display: none;
+}

@@ -1,12 +1,12 @@
 import Task from '../models/task.js';
 
 const tasks = [
-    new Task(1, 'Chi chợ', 'small'),
-    new Task(2, 'Nấu cơm', 'medium'),
-    new Task(3, 'Học code', 'high'),
-    new Task(4, 'Task 4', 'high'),
-    new Task(5, 'Task 5', 'high'),
-    new Task(6, 'Task 6', 'high'),
+    new Task(1, 'task A', 'small'),
+    new Task(2, 'task B', 'medium'),
+    new Task(3, 'task C', 'high'),
+    new Task(4, 'task D', 'high'),
+    new Task(5, 'task E', 'high'),
+    new Task(6, 'task F', 'high'),
 ];
 
 export default tasks;
