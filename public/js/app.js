@@ -1,4 +1,5 @@
-import __tasks__ from '../../data/tasks.js';
+import __task__ from '../../data/tasks.js';
+import levelMap from '../../config/constants.js';
 
 /**
  * name: anh muốn sắp xếp theo name.
@@ -8,6 +9,8 @@ const sortType = {
     orderBy: 'name',
     orderDir: 'desc',
 }
+let TASK_DATA = [...__task__];
+
 const inputSortEl = document.querySelector('.sort-values');
 
 inputSortEl.addEventListener('change', function(e) {
@@ -44,10 +47,10 @@ function renderTasks(tasks) {
         return `<tr>
                     <td>${task.id}</td>
                     <td>${task.name}</td>
-                    <td><span class="span">${task.level}</span></td>
+                    <td><span class="span">${levelMap.label[task.level]}</span></td>
                     <td>
-                        <button type="button">Delete</button>
-                        <button type="button">Edit</button>
+                        <button data-task-id="${task.id}" type="button" class="btn-delete">Delete</button>
+                        <button type="button" class="btn-edit">Edit</button>
                     </td>
                 </tr>`;
     });
@@ -83,7 +86,7 @@ function search() {
     const inputSearch = document.querySelector('[name=search-result]');
     inputSearch.addEventListener('keyup', function(event) {
         const valueSearch = event.target.value.toLowerCase();
-        const newTasks = __tasks__.filter(function(task) {
+        const newTasks = TASK_DATA.filter(function(task) {
             if (task.name.toLowerCase().includes(valueSearch)) {
                 return true;
             } else {
@@ -117,7 +120,7 @@ function search() {
 
 function sortHandler(orderBy, orderDir) {
     if (orderBy === 'name') {
-        const tasksCopy = [...__tasks__].sort(function(a, b) {
+        const tasksCopy = [...TASK_DATA].sort(function(a, b) {
             if (a.name > b.name) {
                 return orderDir === 'asc' ? -1 : 1;
             } else if (a.name < b.name) {
@@ -134,8 +137,29 @@ function sortHandler(orderBy, orderDir) {
     }
 }
 
-renderTasks(__tasks__);
+function deleteHandler() {
+    const btnDeleteEls = document.querySelectorAll('.btn-delete');
+    btnDeleteEls.forEach(function(btnItem) {
+        btnItem.addEventListener('click', function() {
+            const taskID = this.getAttribute('data-task-id');
+            // const taskID = btnItem.getAttribute('data-task-id');
+            // tasks = [1, 2, 3, 4]
+            // 2
+
+            const newTask = TASK_DATA.filter(function(task) {
+                return +task.id !== +taskID;
+            });
+
+            TASK_DATA = newTask;
+
+            renderTasks(TASK_DATA); // render dom 2
+            deleteHandler(); // delete data dom 2
+        });
+    });
+}
+
+renderTasks(TASK_DATA); // render dom 1
 toggleForm();
 search();
 sortHandler(sortType.orderBy, sortType.orderDir);
-
+deleteHandler(); // delete data dom 1
