@@ -1,5 +1,7 @@
 import __task__ from '../../data/tasks.js';
 import levelMap from '../../config/constants.js';
+import Task from '../../models/task.js';
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 /**
  * name: anh muốn sắp xếp theo name.
@@ -10,6 +12,7 @@ const sortType = {
     orderDir: 'desc',
 }
 let TASK_DATA = [...__task__];
+let taskEditSelected = null;
 
 const inputSortEl = document.querySelector('.sort-values');
 
@@ -20,6 +23,18 @@ inputSortEl.addEventListener('change', function(e) {
     sortType.orderDir = valSort[1];
     sortHandler(sortType.orderBy, sortType.orderDir);
 });
+
+function getColorByTaskLevel(level) {
+    if (level === levelMap.key.small) {
+        return '#00cc74';
+    } else if (level === levelMap.key.medium) {
+        return 'yellow';
+    } else if (level === levelMap.key.hight) {
+        return 'red';
+    } else {
+        throw new Error(`Task level ${level} không hợp lệ`);
+    }
+}
 
 function renderTasks(tasks) {
     console.log('render task: ', tasks);
@@ -43,14 +58,21 @@ function renderTasks(tasks) {
      * ]
      */
 
-    const taskFormatted = tasks.map(function(task) {
+    const taskFormatted = tasks.map(function(task, index) {
         return `<tr>
-                    <td>${task.id}</td>
+                    <td>${index + 1}</td>
                     <td>${task.name}</td>
-                    <td><span class="span">${levelMap.label[task.level]}</span></td>
                     <td>
-                        <button data-task-id="${task.id}" type="button" class="btn-delete">Delete</button>
-                        <button type="button" class="btn-edit">Edit</button>
+                        <span
+                            class="span"
+                            style="background-color: ${getColorByTaskLevel(task.level)};"
+                        >
+                            ${levelMap.label[task.level]}
+                        </span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn-delete" data-task-id="${task.id}">Delete</button>
+                        <button type="button" class="btn-edit" data-task-id="${task.id}">Edit</button>
                     </td>
                 </tr>`;
     });
@@ -141,19 +163,99 @@ function deleteHandler() {
     const btnDeleteEls = document.querySelectorAll('.btn-delete');
     btnDeleteEls.forEach(function(btnItem) {
         btnItem.addEventListener('click', function() {
-            const taskID = this.getAttribute('data-task-id');
-            // const taskID = btnItem.getAttribute('data-task-id');
-            // tasks = [1, 2, 3, 4]
-            // 2
+            const confirmDelete = confirm('Bạn có chắn muốn xóa task này?');
+            if (confirmDelete) {
+                const taskID = this.getAttribute('data-task-id');
+                // const taskID = btnItem.getAttribute('data-task-id');
+                // tasks = [1, 2, 3, 4]
+                // 2
+                console.log({ taskID }); // '2' === 2 => false
 
-            const newTask = TASK_DATA.filter(function(task) {
-                return +task.id !== +taskID;
+                const newTask = TASK_DATA.filter(function(task) {
+                    return task.id !== taskID;
+                });
+
+                TASK_DATA = newTask;
+
+                renderTasks(TASK_DATA); // render dom 2
+                deleteHandler(); // delete data dom 2
+                editTask();
+            }
+        });
+    });
+}
+
+function addNewTask() {
+    const formTaskEl = document.getElementById('form-task');
+    formTaskEl.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const inputNameEl = document.querySelector('.input-name');
+        const inputLevelEl = document.querySelector('.input-level');
+        const inputNameVal = inputNameEl.value;
+        const inputLevelVal = inputLevelEl.value;
+
+        // 0, null, undefined, false => boolean -> false
+        if (!inputNameVal.trim().length) {
+            alert('Vui lòng nhập tên task');
+        } else {
+            if (taskEditSelected === null) {
+                // Add new task
+                const newTask = new Task(uuidv4(), inputNameVal, +inputLevelVal);
+                // what is push method?
+                TASK_DATA.push(newTask);
+                renderTasks(TASK_DATA); // render dom 2
+                deleteHandler(); // delete data dom 2
+                editTask();
+
+            } else {
+                // Chú ý nghiên cứu kỹ
+                const newTask = new Task(taskEditSelected.id, inputNameVal, +inputLevelVal);
+                const taskIndexFound = TASK_DATA.findIndex(function(taskItem) {
+                    return taskItem.id === taskEditSelected.id;
+                });
+                TASK_DATA[taskIndexFound] = newTask;
+                renderTasks(TASK_DATA);
+                deleteHandler();
+                editTask();
+            }
+            // Reset form
+            inputNameEl.value = '';
+            inputLevelEl.value = 1;
+
+            // Hidden form
+            const controlsFormEl = document.querySelector('.controls-form');
+            const buttonToggleFormEl = document.querySelector('.button-toggle-form');
+            controlsFormEl.classList.add('hidden');
+            buttonToggleFormEl.style.backgroundColor = 'rgb(27, 62, 62)';
+            buttonToggleFormEl.innerText = 'SHOW FORM';
+        }
+    });
+}
+
+function editTask() {
+    const btnDeleteEls = document.querySelectorAll('.btn-edit');
+    btnDeleteEls.forEach(function(btnItem) {
+        btnItem.addEventListener('click', function() {
+             // Chú ý nghiên cứu kỹ
+            const taskID = this.getAttribute('data-task-id');
+            const taskIndexFound = TASK_DATA.findIndex(function(taskItem) {
+                return taskItem.id === taskID;
             });
 
-            TASK_DATA = newTask;
+            taskEditSelected = TASK_DATA[taskIndexFound];
 
-            renderTasks(TASK_DATA); // render dom 2
-            deleteHandler(); // delete data dom 2
+            // // Append data to form
+            const inputNameEl = document.querySelector('.input-name');
+            const inputLevelEl = document.querySelector('.input-level');
+            inputNameEl.value = taskEditSelected.name;
+            inputLevelEl.value = taskEditSelected.level;
+
+            // Open form
+            const controlsFormEl = document.querySelector('.controls-form');
+            const buttonToggleFormEl = document.querySelector('.button-toggle-form');
+            controlsFormEl.classList.remove('hidden');
+            buttonToggleFormEl.style.backgroundColor = 'red';
+            buttonToggleFormEl.innerText = 'HIDDEN FORM';
         });
     });
 }
@@ -163,3 +265,5 @@ toggleForm();
 search();
 sortHandler(sortType.orderBy, sortType.orderDir);
 deleteHandler(); // delete data dom 1
+addNewTask();
+editTask();

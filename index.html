@@ -39,15 +39,15 @@
                         <button type="button" class="button-toggle-form">SHOW FORM</button>
                     </div>
                     <div class="controls-form">
-                        <form action="" class="flex-form">
+                        <form id="form-task" action="" method="POST" class="flex-form">
                             <div class="input-control">
-                                <input type="text" placeholder="Type a new task...!">
+                                <input type="text" name="name" class="input-name" placeholder="Type a new task...!">
                             </div>
                             <div class="level-control">
-                                <select name="" class="level-values">
-                                    <option value="">SMALL</option>
-                                    <option value="">MEDIUM</option>
-                                    <option value="">HIGHT</option>
+                                <select name="" class="level-values input-level">
+                                    <option value="1">SMALL</option>
+                                    <option value="2">MEDIUM</option>
+                                    <option value="3">HIGHT</option>
                                 </select>
                             </div>
                             <div class="button-control">
