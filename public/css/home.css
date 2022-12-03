@@ -1,1 +1,131 @@
-/* Home styled */
+button {
+    cursor: pointer;
+}
+.container {
+    width: 960px;
+    margin: 0px auto;
+}
+/* header */
+.header {
+    font-family: 'Times New Roman', Times, serif;
+    border-bottom: 1px solid #bbb5b5;
+}
+/* end-header */
+
+/* content */
+.content {
+    margin-top: 30px;
+}
+.content-controls {
+    display: flex;
+}
+.content-controls .controls-left,
+.content-controls .controls-right {
+    flex: 0 0 50%;
+}
+.content-controls .controls-left .controls-sort {
+    display: flex;
+    margin-bottom: 20px;
+}
+.content-controls .controls-left .controls-sort .sort-values {
+    margin-right: 10px;
+    background-color: darkcyan;
+    outline: none;
+}
+.content-controls .controls-left .controls-sort .sort-preview {
+    background-color: blueviolet;
+}
+.content-controls .controls-left .controls-sort .sort-values,
+.content-controls .controls-left .controls-sort .sort-preview {
+    border-radius: 3px;
+    color: #ffff;
+    padding: 3px;
+}
+.content-controls .controls-left .controls-search input {
+    padding: 5px 0px;
+    margin-right: 5px;
+    width: 300px;
+}
+.content-controls .controls-left .controls-search .text {
+    padding: 6px;
+    background-color: rgb(27, 62, 62);
+    border-radius: 3px;
+    color: #ffff;
+}
+.content-controls .controls-right .controls-button {
+    width: 100%;
+}
+.content-controls .controls-right .controls-button button {
+    width: 100%;
+    padding: 5px 0px;
+    background-color: rgb(27, 62, 62);
+    border-radius: 3px;
+    color: #ffff;
+    margin-bottom: 20px;
+
+}
+.content-controls .controls-right .controls-form .flex-form {
+    display: flex;
+
+}
+.content-controls .controls-right .input-control input {
+    padding: 5px 0px;
+}
+.content-controls .controls-right .level-control {
+    margin: 0px 20px 0px 20px;
+    outline: none;
+}
+.content-controls .controls-right .level-control .level-values {
+    background-color: darkcyan;
+    padding: 5px;
+    border-radius: 3px;
+}
+.content-controls .controls-right .button-control button {
+    padding: 5px;
+    background-color: rgb(27, 62, 62);
+    color: #ffff;
+    border: none;
+    border-radius: 3px;
+}
+
+.content-tasks {
+    margin-top: 20px;
+}
+.content-tasks table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table, td, th {
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.content-tasks table th {
+    padding: 5px;
+}
+.content-tasks td {
+    padding: 10px;
+}
+.content-tasks .span {
+    background-color: darkcyan;
+    padding: 5px;
+    border-radius: 4px;
+}
+.content-tasks button {
+    outline: none;
+    border: none;
+    padding: 5px;
+    border-radius: 2px;
+}
+.content-tasks button:first-child {
+    background-color: red;
+    color: #ffff;
+    margin-right: 3px;
+}
+.content-tasks button:last-child {
+    background-color: orange;
+    color: #ffff;
+}
+
+.hidden {
+    display: none;
+}
