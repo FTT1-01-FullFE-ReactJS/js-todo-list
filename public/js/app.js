@@ -198,9 +198,8 @@ function deleteHandler() {
 }
 
 function addNewTask() {
-    const formTaskEl = document.getElementById('form-task');
-    formTaskEl.addEventListener('submit', function(event) {
-        event.preventDefault();
+    const submitButtonEl = document.getElementById('submit-form');
+    submitButtonEl.addEventListener('click', function() {
         const inputNameEl = document.querySelector('.input-name');
         const inputLevelEl = document.querySelector('.input-level');
         const inputNameVal = inputNameEl.value;
