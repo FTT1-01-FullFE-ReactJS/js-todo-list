@@ -11,7 +11,7 @@ const sortType = {
     orderBy: 'name',
     orderDir: 'desc',
 }
-let TASK_DATA = [...__task__];
+let TASK_DATA = [...getDataFromLocalStorage()];
 let taskEditSelected = null;
 
 const inputSortEl = document.querySelector('.sort-values');
@@ -23,6 +23,18 @@ inputSortEl.addEventListener('change', function(e) {
     sortType.orderDir = valSort[1];
     sortHandler(sortType.orderBy, sortType.orderDir);
 });
+
+
+function getDataFromLocalStorage() {
+    const data = localStorage.getItem('list_tasks');
+    return JSON.parse(data);
+}
+
+function storeLocalStorage(data) {
+    // typeof data = array
+    // b1: chuyển array -> string
+    localStorage.setItem('list_tasks', JSON.stringify(data));
+}
 
 function getColorByTaskLevel(level) {
     if (level === levelMap.key.small) {
@@ -37,7 +49,6 @@ function getColorByTaskLevel(level) {
 }
 
 function renderTasks(tasks) {
-    console.log('render task: ', tasks);
     /**
      * b1: lấy dom mà mình muốn cho task hiển thị ra
      * b2: Chuyển cấu trúc array -> dom (tr > td)
@@ -176,6 +187,7 @@ function deleteHandler() {
                 });
 
                 TASK_DATA = newTask;
+                storeLocalStorage(TASK_DATA);
 
                 renderTasks(TASK_DATA); // render dom 2
                 deleteHandler(); // delete data dom 2
@@ -203,6 +215,7 @@ function addNewTask() {
                 const newTask = new Task(uuidv4(), inputNameVal, +inputLevelVal);
                 // what is push method?
                 TASK_DATA.push(newTask);
+                storeLocalStorage(TASK_DATA);
                 renderTasks(TASK_DATA); // render dom 2
                 deleteHandler(); // delete data dom 2
                 editTask();
@@ -214,6 +227,7 @@ function addNewTask() {
                     return taskItem.id === taskEditSelected.id;
                 });
                 TASK_DATA[taskIndexFound] = newTask;
+                storeLocalStorage(TASK_DATA);
                 renderTasks(TASK_DATA);
                 deleteHandler();
                 editTask();
