@@ -27,6 +27,9 @@ inputSortEl.addEventListener('change', function(e) {
 
 function getDataFromLocalStorage() {
     const data = localStorage.getItem('list_tasks');
+    if (!data) {
+        return [];
+    }
     return JSON.parse(data);
 }
 
