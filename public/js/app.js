@@ -24,8 +24,8 @@ buttonToggleFormEl.addEventListener('click', function() {
     : handleForm().close();
 });
 
-inputSearch.addEventListener('keyup', function(event) {
-    searchString = event.target.value.toLowerCase();
+inputSearch.addEventListener('keyup', function({ target: { value } }) {
+    searchString = value.toLowerCase();
     handleFilterTasks(searchString, sortType.orderBy, sortType.orderDir);
 });
 
