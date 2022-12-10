@@ -1,5 +1,5 @@
 import Task from '../models/task.js';
-import levelMap from '../config/constants.js';
+import { levelMap } from '../config/constants.js';
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 const tasks = [
